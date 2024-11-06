@@ -1,12 +1,12 @@
 import { RouterProvider } from "react-router-dom";
 import { router } from "@/router/router";
-
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <>
-      <h1 className="text-red-500">This is navigation (title and user status account)</h1>
       <div>
+        <Navbar name={"Victor"} />
         <RouterProvider router={router} />
       </div>
     </>
