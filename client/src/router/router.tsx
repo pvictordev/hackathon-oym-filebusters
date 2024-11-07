@@ -1,12 +1,11 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-
-// const InvoiceLayout = React.lazy(() => import("../layouts/InvoiceLayout"));
-// const PassportLayout = React.lazy(() => import("../layouts/PassportLayout"));
-// const PrivateLayout = React.lazy(() => import("../layouts/PrivateLayout"));
+import ProtectedRoute from "@/components/ProtectedRoute";
+import Login from "@/features/auth/pages/Login";
+import Register from "@/features/auth/pages/Register";
 
 import {
-  PrivateLayout,
+  DashboardLayout,
   IdentityLayout,
   InvoiceLayout,
   PassportLayout,
@@ -21,42 +20,43 @@ const IdentityCustomExtraction = React.lazy(
 );
 
 export enum Routes {
-  PrivateLayout = "/",
+  DashboardLayout = "/",
   ServicesLayout = "/services",
   IdentityLayout = "/services/identity",
   IdentityExtraction = "/services/identity/template-extraction",
   IdentityCustomExtraction = "/services/identity/custom-template-extraction/:identityCustomTemplateId",
   InvoiceLayout = "/services/invoice",
   PassportLayout = "/services/passport",
+  Login = "/login",
+  Register = 'Register',
 }
 
+// Authenticated router setup
 export const router = createBrowserRouter([
   {
-    path: Routes.PrivateLayout,
-    element: <PrivateLayout />,
-  },
-  {
-    path: Routes.ServicesLayout,
-    element: <ServicesLayout />,
-  },
-  {
-    path: Routes.IdentityLayout,
-    element: <IdentityLayout />,
+    path: Routes.DashboardLayout,
+    element: <ProtectedRoute />,
     children: [
-      // { index: true, element: <IdentityLayout /> },
-      { path: Routes.IdentityExtraction, element: <IdentityExtraction /> },
+      { path: Routes.DashboardLayout, element: <DashboardLayout /> },
+      { path: Routes.ServicesLayout, element: <ServicesLayout /> },
       {
-        path: Routes.IdentityCustomExtraction,
-        element: <IdentityCustomExtraction />,
+        path: Routes.IdentityLayout,
+        element: <IdentityLayout />,
+        children: [
+          { path: Routes.IdentityExtraction, element: <IdentityExtraction /> },
+          { path: Routes.IdentityCustomExtraction, element: <IdentityCustomExtraction /> },
+        ],
       },
+      { path: Routes.InvoiceLayout, element: <InvoiceLayout /> },
+      { path: Routes.PassportLayout, element: <PassportLayout /> },
     ],
   },
   {
-    path: Routes.InvoiceLayout,
-    element: <InvoiceLayout />,
+    path: Routes.Login,
+    element: <Login />,
   },
   {
-    path: Routes.PassportLayout,
-    element: <PassportLayout />,
+    path: Routes.Register,
+    element: <Register />,
   },
 ]);
